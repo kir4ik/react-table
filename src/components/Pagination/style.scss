@@ -1,0 +1,29 @@
+@import 'src/assets/variables';
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+
+  &__page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background: $color-white;
+    color: $primary-color;
+    border: $border-block-style;
+    border-radius: $border-radius;
+    cursor: pointer;
+    user-select: none;
+
+    // &:hover,
+    // &_active {}
+
+    &_active {
+      pointer-events: none;
+    }
+  }
+}

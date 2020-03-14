@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { tableCaptions } from 'consts';
+import Pagination from 'components/Pagination';
 
 import CustomersTableCaptions from './CustomersTableCaptions';
 import CustomersTableRow from './CustomersTableRow';
@@ -77,26 +78,11 @@ const CustomersTable = ({
       />
       {data.slice(sliceFrom, sliceFrom + fillPageSize).map(item => <CustomersTableRow key={item.id} info={item} />)}
 
-      <div className="customers-table__pagination">
-        {currentPage > 1 && (
-          <button
-            type="button"
-            className="customers-table__pagination__button-page customers-table__pagination__button-page_prev"
-            onClick={() => setPage(currentPage - 1)}
-          >
-            Prev
-          </button>
-        )}
-        {currentPage < countPages && (
-          <button
-            type="button"
-            className="customers-table__pagination__button-page customers-table__pagination__button-page_next"
-            onClick={() => setPage(currentPage + 1)}
-          >
-            Next
-          </button>
-        )}
-      </div>
+      <Pagination
+        countPages={countPages}
+        currentPage={currentPage}
+        onChangePage={setPage}
+      />
     </div>
   );
 };
