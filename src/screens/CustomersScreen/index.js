@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { CustomersTable } from 'components/tables';
+import { CustomerForm } from 'components/forms';
 import { useCustomers } from 'hooks';
 import { tableCaptions } from 'consts';
 
@@ -11,12 +12,15 @@ const CustomersScreen = () => {
   console.log('customer >>>', customer);
 
   return (
-    <CustomersTable
-      initalSort={{
-        id: tableCaptions.CUSTOMER_CAPTIONS_ID.ID,
-        isDown: true,
-      }}
-    />
+    <div>
+      <CustomersTable
+        initalSort={{
+          id: tableCaptions.CUSTOMER_CAPTIONS_ID.ID,
+          isDown: true,
+        }}
+      />
+      <CustomerForm />
+    </div>
   );
 };
 

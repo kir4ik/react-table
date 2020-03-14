@@ -1,0 +1,46 @@
+@import
+  'src/assets/variables',
+  'src/assets/keyframes';
+
+.base-field {
+  display: flex;
+  flex-direction: column;
+  $parent: &;
+
+  &_error {
+    #{$parent} {
+      &__input,
+      &__input:focus {
+        border-color: $color-red;
+        color: $color-red;
+      }
+
+      &__label {
+        animation: text-highlight 1.5s infinite;
+      }
+    }
+  }
+
+  &__label {
+    font-size: $fontSizeLarge;
+    color: $secondary-color;
+    margin-bottom: 5px;
+    width: fit-content;
+  }
+
+  &__input {
+    padding: 10px 5px;
+    font-size: $fontSizeSmall;
+    color: $primary-color;
+    border: $border-style;
+    border-radius: $border-radius;
+
+    &::placeholder {
+      color: $secondary-color;
+    }
+
+    &:focus {
+      border-color: $color-violet;
+    }
+  }
+}
