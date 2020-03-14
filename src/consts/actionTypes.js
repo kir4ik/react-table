@@ -1,0 +1,7 @@
+export const REQUEST_START = 'REQUEST_START';
+export const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
+export const REQUEST_FAILURE = 'REQUEST_FAILURE';
+
+export const RESET = 'RESET';
+export const UPDATE_ENTITIES = 'UPDATE_ENTITIES';
+export const UPDATE_RESULTS = 'UPDATE_RESULTS';

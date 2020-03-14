@@ -1,0 +1,18 @@
+@import 'variables';
+
+%simple-block {
+  border-radius: $border-radius;
+  color: $primary-color;
+  background-color: $color-white;
+  box-shadow: $block-shadow;
+}
+
+%simple-block-with-hover {
+  @extend %simple-block;
+
+  transition: box-shadow 0.4s ease-in-out;
+
+  &:hover {
+    box-shadow: $block-shadow-hover;
+  }
+}
