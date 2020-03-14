@@ -1,0 +1,33 @@
+@import 'src/assets/variables';
+
+.base-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  color: $primary-color;
+  background: $color-white;
+  border: $border-style;
+  border-radius: $border-radius;
+  padding: 10px 20px;
+  font-size: $fontSizeMedium;
+  font-weight: normal;
+  transition: all $transition-duration;
+
+  &:disabled {
+    font-weight: normal;
+    color: $secondary-color;
+    background: whitesmoke;
+    cursor: not-allowed;
+  }
+
+  &_small {
+    padding: 10px;
+    font-size: $fontSizeSmall;
+  }
+
+  &:hover:not(:disabled) {
+    color: cyan;
+    background: $primary-color;
+  }
+}
