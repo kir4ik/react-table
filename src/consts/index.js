@@ -1,10 +1,7 @@
-import * as actionTypes from './actionTypes';
-import * as tableCaptions from './tableCaptions';
+import * as types from './actionTypes';
 
-const isDev = !!(process && process.env.NODE_ENV !== 'production');
+export * from './formValidators';
+export * from './tableCaptions';
 
-export {
-  actionTypes,
-  tableCaptions,
-  isDev,
-};
+export const isDev = !!(process && process.env.NODE_ENV !== 'production');
+export const actionTypes = types;

@@ -11,8 +11,9 @@ const BaseField = ({
   id,
   ...rest
 }) => {
+  console.log(input.name, meta);
   const fieldClass = classNames('base-field', {
-    'base-field_error': !meta.pristine && !!(meta.error || meta.invalid),
+    'base-field_error': meta.touched && !!(meta.error || meta.invalid),
   });
 
   const inputId = id || input.name;

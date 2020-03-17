@@ -1,7 +1,2 @@
-import makeAction from './makeAction';
-import makeReducer from './makeReducer';
-
-export {
-  makeAction,
-  makeReducer,
-};
+export { default as makeAction } from './makeAction';
+export { default as makeReducer } from './makeReducer';

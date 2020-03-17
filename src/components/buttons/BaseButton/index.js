@@ -7,10 +7,13 @@ import './style.scss';
 const BaseButton = ({
   content,
   type,
+  disabled,
+  loading,
   ...props
 }) => {
   const buttonClass = classNames('base-button', {
     [`base-button_${type}`]: !!type,
+    'base-button_loading': !!loading,
   });
 
   return (
@@ -18,6 +21,7 @@ const BaseButton = ({
       type="button"
       className={buttonClass}
       {...props}
+      disabled={disabled || loading}
     >
       {content}
     </button>
@@ -33,11 +37,15 @@ BaseButton.propTypes = {
     '',
     'small',
   ]),
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 BaseButton.defaultProps = {
   content: null,
   type: '',
+  disabled: false,
+  loading: false,
 };
 
 export default BaseButton;

@@ -1,25 +1,33 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { Form, Field } from 'react-final-form';
 
 import { BaseButton } from 'components/buttons';
-import { BaseField } from 'components/fields';
+import { BaseField, SelectField } from 'components/fields';
+import { validateRequired } from 'helpers';
+import { validateAddCustomers } from 'consts';
 
 import './style.scss';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
 const onSubmit = (...args) => console.log('args >>', ...args) || sleep(1500);
 
-const CustomerForm = () => (
+const genderValues = [
+  { value: '', label: '-- No Selected --' },
+  { value: 'm', label: 'Male' },
+  { value: 'f', label: 'Female' },
+];
+
+const CustomerForm = formProps => (
   <Form
+    {...formProps}
     onSubmit={onSubmit}
-    // validate={onSubmit}
+    validate={validateAddCustomers}
     render={({
       handleSubmit,
       submitting,
       pristine,
       form,
+      invalid,
     }) => (
       <form onSubmit={handleSubmit} className="customer-form">
         <h2 className="customer-form__title">Add New Customer</h2>
@@ -30,31 +38,35 @@ const CustomerForm = () => (
             name="firstName"
             label="First Name"
             placeholder="First Name"
+            validate={validateRequired}
           />
           <Field
             component={BaseField}
             name="lastName"
             label="Last Name"
             placeholder="Last Name"
+            validate={validateRequired}
           />
           <Field
             component={BaseField}
             name="age"
             label="Age"
             placeholder="Age"
+            validate={validateRequired}
           />
           <Field
             component={BaseField}
             name="phone"
             label="Phone"
             placeholder="___-___-____"
+            validate={validateRequired}
           />
-          {/* TODO set Gender via SelectField */}
-          {/* <Field
+          <Field
             component={SelectField}
             name="gender"
             label="Gender"
-          /> */}
+            values={genderValues}
+          />
         </div>
 
         <div className="customer-form__buttons">
@@ -65,8 +77,8 @@ const CustomerForm = () => (
           />
           <BaseButton
             onClick={handleSubmit}
-            disabled={pristine}
-            // TODO loading={submitting}
+            disabled={pristine || invalid}
+            loading={submitting}
             content="Submit"
           />
         </div>
@@ -74,7 +86,5 @@ const CustomerForm = () => (
     )}
   />
 );
-
-CustomerForm.propTypes = {};
 
 export default CustomerForm;
