@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
-import { tableCaptions } from 'consts';
+import { CUSTOMER_CAPTIONS } from 'consts';
 import Pagination from 'components/Pagination';
 
 import CustomersTableCaptions from './CustomersTableCaptions';
@@ -38,7 +38,7 @@ const CustomersTable = ({
   const countPages = Math.ceil(data.length / fillPageSize);
 
   const captions = useMemo(() => {
-    let res = tableCaptions.CUSTOMER_CAPTIONS;
+    let res = CUSTOMER_CAPTIONS;
     const {
       id,
       isUp,
@@ -46,7 +46,7 @@ const CustomersTable = ({
     } = sortParams || {};
 
     if (id || Number.isFinite(id)) {
-      res = tableCaptions.CUSTOMER_CAPTIONS.map(item => (item.id === id
+      res = CUSTOMER_CAPTIONS.map(item => (item.id === id
         ? { ...item, isUp, isDown }
         : item
       ));

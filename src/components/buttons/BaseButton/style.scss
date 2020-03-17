@@ -14,20 +14,39 @@
   font-weight: normal;
   transition: all $transition-duration;
 
-  &:disabled {
+  &_small {
+    padding: 10px;
+    font-size: $fontSizeSmall;
+  }
+
+
+  &:hover:not(:disabled):not(#{&}_loading) {
+    color: cyan;
+    background: $primary-color;
+  }
+
+  &:disabled,
+  &_loading {
     font-weight: normal;
     color: $secondary-color;
     background: whitesmoke;
     cursor: not-allowed;
   }
 
-  &_small {
-    padding: 10px;
-    font-size: $fontSizeSmall;
+  &_loading,
+  &_loading:disabled {
+    animation : shimmer 2s infinite linear forwards;
+    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    background-size: 25% 100%;
+    cursor: progress;
   }
+}
 
-  &:hover:not(:disabled) {
-    color: cyan;
-    background: $primary-color;
-  }
+@keyframes shimmer {
+  0%{
+		background-position-x: 0%;
+	}
+	100% {
+		background-position-x: 100%;
+	}
 }

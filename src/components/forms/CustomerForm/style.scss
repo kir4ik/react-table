@@ -1,0 +1,33 @@
+@import
+  'src/assets/variables',
+  'src/assets/extend';
+
+.customer-form {
+  @extend %simple-block;
+
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  margin: 50px;
+
+  &__title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: $fontSizeModalTitle;
+  }
+
+  &__fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+
+  &__buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    max-width: $screenXXS;
+    margin-left: auto;
+  }
+}
