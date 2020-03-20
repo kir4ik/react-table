@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CustomersScreen } from 'src/screens';
-import { dbCore } from 'helpers';
+import dbCore from 'helpers/dbCore';
 
 dbCore.onready(() => {
   console.log('---- dbCore ready ----');

@@ -38,6 +38,10 @@ const getDbCore = () => {
     interfaceDB.db = instance;
     // set actions
     Object.entries(actions).forEach(([name, fn]) => {
+      // все actions связаны с db и table
+      // Promise.resolve нужен чтобы запрос к бд не начал выполнятся в основном потоке сразу
+      // все ошибки будут перехвачены (onerror)
+      // конечный результат в едином формате (getResponse)
       interfaceDB.actions[name] = ({
         body = {},
         onsuccess = Function.prototype,
@@ -46,13 +50,9 @@ const getDbCore = () => {
         db: interfaceDB.db,
         table: connection.table,
       })(body)
+        .catch(error => getResponse(null, error))
         .then((response) => {
-          onsuccess(response);
-          return response;
-        })
-        .catch((error) => {
-          const response = getResponse(null, error);
-          onerror(response);
+          (response.isError ? onerror : onsuccess)(response);
           return response;
         }));
     });
