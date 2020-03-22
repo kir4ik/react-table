@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
 
+export { default as actionByTypes } from './actionByTypes';
 export * from './formValidators';
 export * from './tableCaptions';
 

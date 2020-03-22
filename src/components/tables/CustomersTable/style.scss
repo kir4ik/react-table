@@ -7,9 +7,15 @@
   display: grid;
   border: $border-style;
   overflow: auto;
-  min-width: 500px;
+  max-width: 100%;
 
-  margin: 100px 50px;
+  &__empty {
+    text-align: center;
+    padding: 10px;
+    font-size: $fontSizeExtraLarge;
+    letter-spacing: 1px;
+    color: $secondary-color;
+  }
 
   &__captions,
   &__row {
@@ -85,6 +91,36 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    &__ceil {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &__control {
+        display: flex;
+        justify-content: flex-end;
+        padding: 5px;
+
+        &__icon {
+          width: 15px;
+          height: 15px;
+          margin-right: 10px;
+          opacity: 0.5;
+          transition: $transition-duration;
+          overflow: hidden;
+          cursor: pointer;
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
     }
 
     &:nth-child(even) {

@@ -13,7 +13,7 @@ const SelectField = ({
   ...rest
 }) => {
   const fieldClass = classNames('select-field', {
-    'select-field_error': !meta.pristine && !!(meta.error || meta.invalid),
+    'select-field_error': (meta.dirty || meta.touched) && !!(meta.error || meta.invalid),
   });
 
   const composeChange = (e) => {
@@ -35,7 +35,6 @@ const SelectField = ({
             key={item.value}
             value={item.value}
             className="select-field__select__option"
-            {...item}
           >
             {item.label}
           </option>

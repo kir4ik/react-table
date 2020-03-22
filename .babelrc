@@ -22,6 +22,11 @@
         "consts": "/consts",
         "helpers": "/helpers"
       }
-    }]
+    }],
+    ["@babel/plugin-transform-runtime",
+      {
+        "regenerator": true
+      }
+    ]
   ]
 }
