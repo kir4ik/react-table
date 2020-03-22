@@ -1,2 +1,2 @@
-export { default as makeAction } from './makeAction';
+export { default as makeAsyncRequest } from './makeAsyncRequest';
 export { default as makeReducer } from './makeReducer';

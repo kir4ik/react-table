@@ -1,5 +1,1 @@
-import CustomerForm from './CustomerForm';
-
-export {
-  CustomerForm,
-};
+export { default as CustomerForm } from './CustomerForm';

@@ -8,19 +8,17 @@ import { validateAddCustomers } from 'consts';
 
 import './style.scss';
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-const onSubmit = (...args) => console.log('args >>', ...args) || sleep(1500);
-
 const genderValues = [
   { value: '', label: '-- No Selected --' },
-  { value: 'm', label: 'Male' },
-  { value: 'f', label: 'Female' },
+  { value: 'male', label: 'Male' },
+  { value: 'female', label: 'Female' },
 ];
+
+const resetWrapper = (submit, form) => e => submit(e).then(({ isReset } = {}) => isReset && form.reset());
 
 const CustomerForm = formProps => (
   <Form
     {...formProps}
-    onSubmit={onSubmit}
     validate={validateAddCustomers}
     render={({
       handleSubmit,
@@ -29,7 +27,7 @@ const CustomerForm = formProps => (
       form,
       invalid,
     }) => (
-      <form onSubmit={handleSubmit} className="customer-form">
+      <form onSubmit={resetWrapper(handleSubmit, form)} className="customer-form">
         <h2 className="customer-form__title">Add New Customer</h2>
 
         <div className="customer-form__fields">
@@ -66,6 +64,7 @@ const CustomerForm = formProps => (
             name="gender"
             label="Gender"
             values={genderValues}
+            validate={validateRequired}
           />
         </div>
 
@@ -76,7 +75,7 @@ const CustomerForm = formProps => (
             content="Reset"
           />
           <BaseButton
-            onClick={handleSubmit}
+            onClick={resetWrapper(handleSubmit, form)}
             disabled={pristine || invalid}
             loading={submitting}
             content="Submit"

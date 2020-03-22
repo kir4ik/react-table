@@ -8,34 +8,20 @@ import CustomersTableCaptions from './CustomersTableCaptions';
 import CustomersTableRow from './CustomersTableRow';
 import './style.scss';
 
-const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-const dataSize = 50;
-const randomData = Array.from(Array(dataSize)).map((el, i) => ({
-  id: i + 1,
-  firstName: `Test name ${i + 1}`,
-  lastName: `Test last name ${i + 1}`,
-  age: rand(18, 100),
-  gender: rand(0, 1) > 0 ? 'male' : 'female',
-  phone: Array.from(Array(rand(7, 15))).map(() => rand(0, 9)).join(''),
-}));
-
 const getInitSortParams = initalSort => (initalSort && (initalSort.id || Number.isFinite(initalSort.id))
   ? { ...initalSort }
   : null
 );
 
-const fillPageSize = 10;
 const CustomersTable = ({
-  data = randomData,
+  customers,
   initalSort,
-  // onEdit,
-  // onDelete,
+  fillPageSize,
+  onEditSubmit,
+  onDeleteSubmit,
 }) => {
   const [sortParams, setSortParams] = useState(() => getInitSortParams(initalSort));
   const [currentPage, setPage] = useState(1);
-
-  const countPages = Math.ceil(data.length / fillPageSize);
 
   const captions = useMemo(() => {
     let res = CUSTOMER_CAPTIONS;
@@ -61,12 +47,23 @@ const CustomersTable = ({
     return res;
   }, [sortParams]);
 
+  const { dataTable, countPages, noData } = useMemo(() => {
+    const sliceFrom = (currentPage - 1) * fillPageSize;
+
+    const res = {
+      dataTable: customers.slice(sliceFrom, sliceFrom + fillPageSize),
+      countPages: Math.ceil(customers.length / fillPageSize),
+    };
+    res.noData = !res.dataTable.length;
+
+    return res;
+  }, [customers, currentPage, fillPageSize]);
+
   const setSortUp = useCallback(id => setSortParams({ id, isUp: true }), []);
   const setSortDown = useCallback(id => setSortParams({ id, isDown: true }), []);
   const resetSort = useCallback(() => setSortParams(getInitSortParams()), []);
 
   console.log('sortParams >>>', sortParams);
-  const sliceFrom = (currentPage - 1) * fillPageSize;
 
   return (
     <div className="customers-table">
@@ -76,7 +73,18 @@ const CustomersTable = ({
         setSortDown={setSortDown}
         resetSort={resetSort}
       />
-      {data.slice(sliceFrom, sliceFrom + fillPageSize).map(item => <CustomersTableRow key={item.id} info={item} />)}
+      {noData ? (
+        <h3 className="customers-table__empty">No Data</h3>
+      ) : (
+        dataTable.map(item => (
+          <CustomersTableRow
+            key={item.id}
+            info={item}
+            onEdit={onEditSubmit} // TODO open edit modal
+            onDelete={onDeleteSubmit} // TODO oppen confirm delete modal
+          />
+        ))
+      )}
 
       <Pagination
         countPages={countPages}
@@ -88,14 +96,16 @@ const CustomersTable = ({
 };
 
 CustomersTable.propTypes = {
-  data: PropTypes.array.isRequired,
-  // onEdit: PropTypes.func.isRequired,
-  // onDelete: PropTypes.func.isRequired,
+  customers: PropTypes.array.isRequired,
+  onEditSubmit: PropTypes.func.isRequired,
+  onDeleteSubmit: PropTypes.func.isRequired,
   initalSort: PropTypes.object,
+  fillPageSize: PropTypes.number,
 };
 
 CustomersTable.defaultProps = {
   initalSort: null,
+  fillPageSize: 10,
 };
 
 export default CustomersTable;

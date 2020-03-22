@@ -56,7 +56,21 @@ export const put = ({ db, table } = {}) => body => promiseTransaction(
 );
 
 export const remove = ({ db, table } = {}) => ({ id }) => promiseTransaction(
-  () => openTransaction({ db, table, permission: 1 }).store[table].delete(id),
+  ({ useChainRequests }) => {
+    const { store } = openTransaction({ db, table, permission: 1 });
+
+    return useChainRequests(
+      () => store[table].get(id),
+      (e) => {
+        const response = getResponse(e.target);
+        if (response.isExists) {
+          return store[table].delete(id);
+        }
+
+        throw new Error(`id ${id} not found`);
+      },
+    );
+  },
 );
 
 export const clear = ({ db, table } = {}) => () => promiseTransaction(
@@ -67,6 +81,9 @@ export const postAll = ({ db, table } = {}) => body => promiseTransaction(
   ({ useChainRequests }) => {
     const { store } = openTransaction({ db, table, permission: 1 });
 
-    return useChainRequests(body.map(item => () => store[table].add(item)));
+    return useChainRequests(
+      ...body.map(item => () => store[table].add(item)),
+      () => store[table].getAll(),
+    );
   },
 );

@@ -44,15 +44,19 @@ const getDbCore = () => {
       // конечный результат в едином формате (getResponse)
       interfaceDB.actions[name] = ({
         body = {},
-        onsuccess = Function.prototype,
-        onerror = Function.prototype,
+        onsuccess,
+        onerror,
       } = {}) => Promise.resolve().then(() => fn({
         db: interfaceDB.db,
         table: connection.table,
       })(body)
         .catch(error => getResponse(null, error))
         .then((response) => {
-          (response.isError ? onerror : onsuccess)(response);
+          const emit = response.isError ? onerror : onsuccess;
+          if (emit) {
+            emit(response);
+          }
+
           return response;
         }));
     });

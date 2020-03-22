@@ -1,5 +1,1 @@
-import CustomersTable from './CustomersTable';
-
-export {
-  CustomersTable,
-};
+export { default as CustomersTable } from './CustomersTable';

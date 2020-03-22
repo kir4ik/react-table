@@ -8,7 +8,9 @@
   display: flex;
   flex-direction: column;
   padding: 20px 15px;
-  margin: 50px;
+  width: 100%;
+  max-width: $screenM;
+  margin: auto;
 
   &__title {
     text-align: center;
