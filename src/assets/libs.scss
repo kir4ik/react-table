@@ -1,3 +1,5 @@
+@import 'variables';
+
 .ReactModal__Overlay {
   opacity: 0;
   transition: opacity 200ms ease-in-out;
@@ -9,4 +11,47 @@
 
 .ReactModal__Overlay--before-close{
   opacity: 0;
+}
+
+.Toastify {
+  &__toast {
+    padding: 20px 20px 20px 25px;
+    background-color: $color-white;
+    box-shadow: $block-shadow;
+    border: none;
+    border-radius: $border-radius;
+
+    &--info {
+      box-shadow: $shadow-inset-info;
+    }
+  }
+
+  &__progress-bar {
+    height: 2px;
+    top: 0;
+
+    &--error {
+      background: $color-red;
+    }
+
+    &--success {
+      background: $color-green;
+    }
+
+    &--warning {
+      background: $color-orange;
+    }
+  }
+
+  &__close-button {
+    color: transparent;
+    width: 15px;
+    height: 15px;
+    background: url("../assets/img/delete.svg") center no-repeat;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

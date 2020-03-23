@@ -10,4 +10,5 @@ export default ({ onsuccess, onerror, id } = {}) => makeAsyncRequest({
   body: { id },
   transformResult: () => id,
   updateResult: actionByTypes.CUSTOMER_REMOVE,
+  showError: true,
 });

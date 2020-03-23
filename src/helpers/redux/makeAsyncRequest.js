@@ -1,4 +1,5 @@
 import { actionByTypes } from 'consts';
+import { errorToast } from '../toasts';
 
 export default options => async (dispatch) => {
   dispatch(actionByTypes.REQUEST_START({
@@ -30,6 +31,10 @@ export default options => async (dispatch) => {
     onerror: (response) => {
       if (options.onerror) {
         options.onerror(response);
+      }
+
+      if (options.showError) {
+        errorToast(options.customError || response.error, { toastId: options.queryKey });
       }
 
       dispatch(actionByTypes.REQUEST_FAILURE({
