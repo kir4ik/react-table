@@ -1,5 +1,5 @@
 {
-  "ignorePatterns": ["build/*"],
+  "ignorePatterns": ["build/*", "docs/*", "dist/*"],
   "rules": {
     "semi": ["error", "always"],
     "no-var": "error",
