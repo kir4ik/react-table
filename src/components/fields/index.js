@@ -1,7 +1,2 @@
-import BaseField from './BaseField';
-import SelectField from './SelectField';
-
-export {
-  BaseField,
-  SelectField,
-};
+export { default as BaseField } from './BaseField';
+export { default as SelectField } from './SelectField';

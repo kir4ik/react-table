@@ -1,4 +1,5 @@
 {
+  "ignorePatterns": ["build/*"],
   "rules": {
     "semi": ["error", "always"],
     "no-var": "error",
