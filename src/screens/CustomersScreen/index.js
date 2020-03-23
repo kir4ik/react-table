@@ -91,44 +91,36 @@ const CustomersScreen = () => {
       />
       <BaseButton content="Add New Customer" onClick={openModalCreate} />
 
-      {activeModal === 'create' && (
-        <CustomerFormModal
-          isOpen
-          title="add new customer"
-          onClose={closeModal}
-          onSubmit={onPostSubmit}
-        />
-      )}
-      {activeModal === 'edit' && (
-        <CustomerFormModal
-          isOpen
-          title="edit customer"
-          onClose={closeModal}
-          onSubmit={onEditSubmit}
-          initialValues={selectedCustomer}
-        />
-      )}
+      <CustomerFormModal
+        isOpen={activeModal === 'create'}
+        title="add new customer"
+        onClose={closeModal}
+        onSubmit={onPostSubmit}
+      />
+      <CustomerFormModal
+        isOpen={activeModal === 'edit'}
+        title="edit customer"
+        onClose={closeModal}
+        onSubmit={onEditSubmit}
+        initialValues={selectedCustomer}
+      />
 
-      {activeModal === 'deleteConfirm' && (
-        <ConfirmModal
-          isOpen
-          onClose={closeModal}
-          title="confirm delete"
-          subTitle={`Are you sure you want to delete ${selectedCustomer.firstName} ${selectedCustomer.lastName}? (id: ${selectedCustomer.id})`}
-          withButtons
-          onConfirm={onDeleteSubmit}
-        />
-      )}
-      {activeModal === 'clearConfirm' && (
-        <ConfirmModal
-          isOpen
-          onClose={closeModal}
-          title="confirm clear table"
-          subTitle="Are you sure you want to delete all customers?"
-          withButtons
-          onConfirm={onConfirmClearSubmit}
-        />
-      )}
+      <ConfirmModal
+        isOpen={activeModal === 'deleteConfirm'}
+        onClose={closeModal}
+        title="confirm delete"
+        subTitle={`Are you sure you want to delete ${selectedCustomer.firstName} ${selectedCustomer.lastName}? (id: ${selectedCustomer.id})`}
+        withButtons
+        onConfirm={onDeleteSubmit}
+      />
+      <ConfirmModal
+        isOpen={activeModal === 'clearConfirm'}
+        onClose={closeModal}
+        title="confirm clear table"
+        subTitle="Are you sure you want to delete all customers?"
+        withButtons
+        onConfirm={onConfirmClearSubmit}
+      />
     </div>
   );
 };
