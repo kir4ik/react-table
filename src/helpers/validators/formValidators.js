@@ -7,8 +7,8 @@ import {
   getValidatePhone,
   validateInteger,
   validateAlphabetic,
-  setValueIfExists,
-} from 'helpers';
+} from './fieldValidators';
+import setValueIfExists from '../setValueIfExists';
 
 const checkAndSetErrors = (errors, fields) => {
   fields.forEach(({ name, value, validate }) => {
@@ -19,7 +19,7 @@ const checkAndSetErrors = (errors, fields) => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const validateAddCustomers = (fields) => {
+export const formValidateAddCustomer = (fields) => {
   const errors = {};
 
   checkAndSetErrors(errors, [

@@ -1,5 +1,1 @@
-import BaseButton from './BaseButton';
-
-export {
-  BaseButton,
-};
+export { default as BaseButton } from './BaseButton';

@@ -1,5 +1,1 @@
-import CustomersScreen from './CustomersScreen';
-
-export {
-  CustomersScreen,
-};
+export { default as CustomersScreen } from './CustomersScreen';

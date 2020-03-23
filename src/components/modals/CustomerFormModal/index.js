@@ -4,8 +4,7 @@ import { Form, Field } from 'react-final-form';
 
 import { BaseButton } from 'components/buttons';
 import { BaseField, SelectField } from 'components/fields';
-import { validateRequired } from 'helpers';
-import { validateAddCustomers } from 'consts';
+import { validateRequired, formValidateAddCustomer } from 'helpers/validators';
 
 import BaseModal from '../BaseModal';
 
@@ -30,7 +29,7 @@ const CustomerFormModal = ({
   >
     <Form
       {...formProps}
-      validate={validateAddCustomers}
+      validate={formValidateAddCustomer}
       render={({
         handleSubmit,
         submitting,
