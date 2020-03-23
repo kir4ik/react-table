@@ -82,7 +82,7 @@ const CustomersScreen = () => {
       <CustomersTable
         initalSort={{
           id: CUSTOMER_CAPTIONS_ID.ID,
-          isDown: true,
+          direction: -1,
         }}
         customers={customers}
         onEditCustomer={onEditCustomer}
