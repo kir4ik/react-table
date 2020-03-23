@@ -6,17 +6,19 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
-import { CUSTOMER_CAPTIONS } from 'consts';
 import Pagination from 'components/Pagination';
+import { CUSTOMER_CAPTIONS, CUSTOMER_CAPTIONS_ID } from 'consts';
+import { customSorts, glider } from 'helpers';
 
 import CustomersTableCaptions from './CustomersTableCaptions';
 import CustomersTableRow from './CustomersTableRow';
 import './style.scss';
 
-const getInitSortParams = initalSort => (initalSort && (initalSort.id || Number.isFinite(initalSort.id))
+const getInitSortParams = initalSort => (initalSort && Number.isFinite(initalSort.id)
   ? { ...initalSort }
   : null
 );
+const gliderDirection = (value, defaultValue) => glider(value, { range: [-1, 1], defaultValue });
 
 const CustomersTable = ({
   customers,
@@ -31,45 +33,78 @@ const CustomersTable = ({
 
   const captions = useMemo(() => {
     let res = CUSTOMER_CAPTIONS;
-    const {
-      id,
-      isUp,
-      isDown,
-    } = sortParams || {};
+    const { id, direction } = sortParams || {};
 
-    if (id || Number.isFinite(id)) {
+    if (Number.isFinite(id)) {
       res = CUSTOMER_CAPTIONS.map(item => (item.id === id
-        ? { ...item, isUp, isDown }
+        ? { ...item, direction }
         : item
       ));
-
-      // if (isUp) {
-      //   res.sort((a, b) => a - b);
-      // } else if (isDown) {
-      //   res.sort((a, b) => b - a);
-      // }
     }
 
     return res;
   }, [sortParams]);
 
+  const sortedCustomers = useMemo(() => {
+    let res = customers;
+
+    if (!sortParams.direction) {
+      return res;
+    }
+
+    const options = {
+      direction: sortParams.direction,
+    };
+
+    switch (sortParams.id) {
+      case CUSTOMER_CAPTIONS_ID.ID:
+        options.key = 'id';
+        break;
+      case CUSTOMER_CAPTIONS_ID.FIRST_NAME:
+        options.key = 'firstName';
+        break;
+      case CUSTOMER_CAPTIONS_ID.LAST_NAME:
+        options.key = 'lastName';
+        break;
+      case CUSTOMER_CAPTIONS_ID.PHONE:
+        options.key = 'phone';
+        options.asType = 'number';
+        break;
+      case CUSTOMER_CAPTIONS_ID.GENDER:
+        options.key = 'gender';
+        break;
+      case CUSTOMER_CAPTIONS_ID.AGE:
+        options.key = 'age';
+        options.asType = 'number';
+        break;
+
+      default:
+        break;
+    }
+
+    if (options.direction && options.key) {
+      res = customSorts(customers, options);
+    }
+
+    return res;
+  }, [customers, sortParams]);
+
   const { dataTable, countPages, noData } = useMemo(() => {
     const sliceFrom = (currentPage - 1) * fillPageSize;
 
     const res = {
-      dataTable: customers.slice(sliceFrom, sliceFrom + fillPageSize),
-      countPages: Math.ceil(customers.length / fillPageSize),
+      dataTable: sortedCustomers.slice(sliceFrom, sliceFrom + fillPageSize),
+      countPages: Math.ceil(sortedCustomers.length / fillPageSize),
     };
     res.noData = !res.dataTable.length;
 
     return res;
-  }, [customers, currentPage, fillPageSize]);
+  }, [sortedCustomers, currentPage, fillPageSize]);
 
-  const setSortUp = useCallback(id => setSortParams({ id, isUp: true }), []);
-  const setSortDown = useCallback(id => setSortParams({ id, isDown: true }), []);
-  const resetSort = useCallback(() => setSortParams(getInitSortParams()), []);
-
-  console.log('sortParams >>>', sortParams);
+  const changeSort = useCallback((id, activeDirection) => setSortParams({
+    id,
+    direction: gliderDirection(activeDirection - 1, -1),
+  }), []);
 
   useEffect(() => {
     // автоматический переход на страницу с данными (когда с текущей данные были удалены или вся таблица очищена)
@@ -82,9 +117,7 @@ const CustomersTable = ({
     <div className="customers-table" style={style}>
       <CustomersTableCaptions
         captions={captions}
-        setSortUp={setSortUp}
-        setSortDown={setSortDown}
-        resetSort={resetSort}
+        changeSort={changeSort}
       />
       {noData ? (
         <h3 className="customers-table__empty">No Data</h3>

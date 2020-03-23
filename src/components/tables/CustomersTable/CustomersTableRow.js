@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import editIcon from 'assets/img/edit.svg';
 import deleteIcon from 'assets/img/delete.svg';
 
+const formatPhone = phone => String(phone).replace(/(\d{3})/g, '$1-').replace(/-?(\d{1})-?$/, '$1');
+
 const CustomersTableRow = ({
   info,
   onEdit,
@@ -13,7 +15,7 @@ const CustomersTableRow = ({
     <span className="customers-table__row__text" title={info.id}>{info.id}</span>
     <span className="customers-table__row__text" title={info.firstName}>{info.firstName}</span>
     <span className="customers-table__row__text" title={info.lastName}>{info.lastName}</span>
-    <span className="customers-table__row__text" title={info.phone}>{info.phone}</span>
+    <span className="customers-table__row__text" title={info.phone}>{formatPhone(info.phone)}</span>
     <span className="customers-table__row__text" title={info.gender}>{info.gender}</span>
     <div className="customers-table__row__ceil">
       <span className="customers-table__row__text" title={info.age}>{info.age}</span>
