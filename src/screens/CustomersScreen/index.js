@@ -7,7 +7,7 @@ import { CustomerFormModal, ConfirmModal } from 'components/modals';
 import { useCustomers } from 'hooks/api';
 import { useModalState } from 'hooks';
 import { CUSTOMER_CAPTIONS_ID } from 'consts';
-import { generateRandomCustomers } from 'helpers';
+import { generateRandomCustomers, successToast, warningToast } from 'helpers';
 
 import './style.scss';
 
@@ -33,36 +33,54 @@ const CustomersScreen = () => {
     openModalClearConfirm,
   } = useModalState(false, ['create', 'edit', 'deleteConfirm', 'clearConfirm']);
 
+  const getSuccessHandler = useCallback(msg => () => {
+    closeModal();
+    successToast(msg, { toastId: msg || 'success' });
+  }, []);
+
   const onDeleteSubmit = useCallback(
-    () => removeCustomer({ id: selectedCustomer.id, onsuccess: closeModal }),
+    () => removeCustomer({ id: selectedCustomer.id, onsuccess: getSuccessHandler('The customer has been removed') }),
     [removeCustomer, selectedCustomer],
   );
   const onEditSubmit = useCallback(
-    body => updateCustomer({ body, onsuccess: closeModal }),
+    body => updateCustomer({ body, onsuccess: getSuccessHandler('The customer has been updated') }),
     [updateCustomer],
   );
   const onPostSubmit = useCallback(
-    body => postCustomer({ body, onsuccess: closeModal }),
+    body => postCustomer({ body, onsuccess: getSuccessHandler('The customer has been added') }),
     [postCustomer],
   );
   const onConfirmClearSubmit = useCallback(
-    () => removeAllCustomers({ onsuccess: closeModal }),
+    () => removeAllCustomers({ onsuccess: getSuccessHandler('All customers have been removed') }),
     [removeAllCustomers],
   );
 
-  const onEditCustomer = (id) => {
+  const findCustomerAndUpdate = (id) => {
     const foundCustomer = customers.find(el => el.id === id);
-    setSelectedCustomer(foundCustomer);
-    openModalEdit();
+    if (foundCustomer) {
+      setSelectedCustomer(foundCustomer);
+    } else {
+      warningToast('The customer not found', { toastId: 'The customer not found' });
+    }
+
+    return foundCustomer;
+  };
+
+  const onEditCustomer = (id) => {
+    const foundCustomer = findCustomerAndUpdate(id);
+    if (foundCustomer) {
+      openModalEdit();
+    }
   };
   const onDeleteCustomer = (id) => {
-    const foundCustomer = customers.find(el => el.id === id);
-    setSelectedCustomer(foundCustomer);
-    openModalDeleteConfirm();
+    const foundCustomer = findCustomerAndUpdate(id);
+    if (foundCustomer) {
+      openModalDeleteConfirm();
+    }
   };
 
   const devInstall = useCallback(
-    () => multyPostCustomers({ body: generateRandomCustomers() }),
+    () => multyPostCustomers({ body: generateRandomCustomers(), onsuccess: getSuccessHandler() }),
     [multyPostCustomers],
   );
 

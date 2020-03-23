@@ -1,5 +1,6 @@
 @import 'src/assets/variables';
 @import 'src/assets/extend';
+@import 'src/assets/keyframes';
 
 .customers-table {
   @extend %simple-block;
@@ -26,8 +27,7 @@
 
   &__captions {
     border-bottom: $border-block-style;
-    // background: $bg-caption;
-    background: #2c4861;
+    background: $bg-caption;
     color: $color-white;
     box-shadow: $shadow-inset-light;
 
@@ -84,6 +84,7 @@
   &__row {
     opacity: 0.9;
     transition: box-shadow $transition-duration, opacity $transition-duration;
+    animation: row-highlight 0s;
 
     &__text {
       padding: 5px 0px 5px 10px;
@@ -135,14 +136,5 @@
       opacity: 1;
       box-shadow: $shadow-inset-info;
     }
-  }
-}
-
-@keyframes show {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }

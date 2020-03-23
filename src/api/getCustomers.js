@@ -9,4 +9,5 @@ export default ({ onsuccess, onerror } = {}) => makeAsyncRequest({
   onerror,
   transformResult: res => res.data || [],
   updateResult: actionByTypes.CUSTOMER_GET_ALL,
+  showError: true,
 });
