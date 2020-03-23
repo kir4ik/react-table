@@ -1,6 +1,8 @@
 {
-  "modules": true,
+  "modules": false,
   "plugins": {
-    "autoprefixer": true
+    "autoprefixer": {
+      "grid": true
+    }
   }
 }
