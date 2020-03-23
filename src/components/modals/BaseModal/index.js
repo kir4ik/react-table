@@ -11,13 +11,13 @@ const BaseModal = ({
   title,
   titleStyle,
   ...rest
-}) => (!isOpen ? null : (
+}) => (
   <Modal
-    // style={customStyles}
     overlayClassName="base-modal-overlay"
     className="base-modal"
     onRequestClose={onClose}
-    isOpen
+    isOpen={isOpen}
+    closeTimeoutMS={200}
     {...rest}
   >
     {title && (
@@ -25,7 +25,7 @@ const BaseModal = ({
     )}
     {children}
   </Modal>
-));
+);
 
 BaseModal.propTypes = {
   children: PropTypes.oneOfType([
