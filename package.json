@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -r docs",
     "start": "parcel serve src/index.html --port 1111 --open --no-autoinstall",
-    "build-prod": "npm run clean & parcel build src/index.html --no-source-maps --out-dir docs"
+    "build-prod": "npm run clean & parcel build src/index.html --no-source-maps --out-dir docs --public-url ./"
   },
   "dependencies": {
     "@babel/runtime": "^7.9.0",
