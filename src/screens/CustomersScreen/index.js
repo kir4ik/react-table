@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 
 import { Loader } from 'components/stubs';
 import { CustomersTable } from 'components/tables';
-import { CustomerForm } from 'components/forms';
 import { BaseButton } from 'components/buttons';
+import { CustomerFormModal, ConfirmModal } from 'components/modals';
 import { useCustomers } from 'hooks/api';
+import { useModalState } from 'hooks';
 import { CUSTOMER_CAPTIONS_ID } from 'consts';
 import { generateRandomCustomers } from 'helpers';
 
@@ -22,18 +23,43 @@ const CustomersScreen = () => {
     customersIsLoading,
   } = useCustomers();
 
+  const [selectedCustomer, setSelectedCustomer] = useState({});
+  const {
+    activeModal,
+    closeModal,
+    openModalCreate,
+    openModalEdit,
+    openModalDeleteConfirm,
+    openModalClearConfirm,
+  } = useModalState(false, ['create', 'edit', 'deleteConfirm', 'clearConfirm']);
+
   const onDeleteSubmit = useCallback(
-    id => removeCustomer({ id }),
-    [removeCustomer],
+    () => removeCustomer({ id: selectedCustomer.id, onsuccess: closeModal }),
+    [removeCustomer, selectedCustomer],
   );
   const onEditSubmit = useCallback(
-    body => updateCustomer({ body }),
+    body => updateCustomer({ body, onsuccess: closeModal }),
     [updateCustomer],
   );
   const onPostSubmit = useCallback(
-    body => postCustomer({ body }).then(res => ({ isReset: !res.isError })),
+    body => postCustomer({ body, onsuccess: closeModal }),
     [postCustomer],
   );
+  const onConfirmClearSubmit = useCallback(
+    () => removeAllCustomers({ onsuccess: closeModal }),
+    [removeAllCustomers],
+  );
+
+  const onEditCustomer = (id) => {
+    const foundCustomer = customers.find(el => el.id === id);
+    setSelectedCustomer(foundCustomer);
+    openModalEdit();
+  };
+  const onDeleteCustomer = (id) => {
+    const foundCustomer = customers.find(el => el.id === id);
+    setSelectedCustomer(foundCustomer);
+    openModalDeleteConfirm();
+  };
 
   const devInstall = useCallback(
     () => multyPostCustomers({ body: generateRandomCustomers() }),
@@ -49,7 +75,7 @@ const CustomersScreen = () => {
   ) : (
     <div className="customers-screen">
       {customers.length ? (
-        <BaseButton content="Clear Table" onClick={removeAllCustomers} />
+        <BaseButton content="Clear Table" onClick={openModalClearConfirm} />
       ) : (
         <BaseButton content="Dev Install" onClick={devInstall} />
       )}
@@ -59,10 +85,50 @@ const CustomersScreen = () => {
           isDown: true,
         }}
         customers={customers}
-        onDeleteSubmit={onDeleteSubmit}
-        onEditSubmit={onEditSubmit}
+        onEditCustomer={onEditCustomer}
+        onDeleteCustomer={onDeleteCustomer}
+        style={{ marginTop: 20, marginBottom: 20 }}
       />
-      <CustomerForm onSubmit={onPostSubmit} />
+      <BaseButton content="Add New Customer" onClick={openModalCreate} />
+
+      {activeModal === 'create' && (
+        <CustomerFormModal
+          isOpen
+          title="add new customer"
+          onClose={closeModal}
+          onSubmit={onPostSubmit}
+        />
+      )}
+      {activeModal === 'edit' && (
+        <CustomerFormModal
+          isOpen
+          title="edit customer"
+          onClose={closeModal}
+          onSubmit={onEditSubmit}
+          initialValues={selectedCustomer}
+        />
+      )}
+
+      {activeModal === 'deleteConfirm' && (
+        <ConfirmModal
+          isOpen
+          onClose={closeModal}
+          title="confirm delete"
+          subTitle={`Are you sure you want to delete ${selectedCustomer.firstName} ${selectedCustomer.lastName}? (id: ${selectedCustomer.id})`}
+          withButtons
+          onConfirm={onDeleteSubmit}
+        />
+      )}
+      {activeModal === 'clearConfirm' && (
+        <ConfirmModal
+          isOpen
+          onClose={closeModal}
+          title="confirm clear table"
+          subTitle="Are you sure you want to delete all customers?"
+          withButtons
+          onConfirm={onConfirmClearSubmit}
+        />
+      )}
     </div>
   );
 };

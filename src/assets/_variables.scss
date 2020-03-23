@@ -5,12 +5,9 @@ $secondary-color-hover: rgba($primary-color, 0.8);
 
 $border-color: rgba($primary-color, 0.05);
 
+$goldenrod-color: #e5bf20;
+
 $color-red: #d0021b;
-
-$bg-caption: #3A80BA;
-$bg-table-first: #FBFBFB;
-$bg-table-second: #F1F1F1;
-
 $color-blue: #006fee;
 $color-green: #6eab27;
 $color-orange: #f7924e;
@@ -19,7 +16,11 @@ $color-black: #1b1b1d;
 $color-jaguar: #232327;
 $color-violet: #8d30f9;
 
-$goldenrod-color: #e5bf20;
+
+$bg-caption: #3A80BA;
+$bg-table-first: #FBFBFB;
+$bg-table-second: #F1F1F1;
+$bg-modal-overlay: rgba($color-black, 0.2);
 
 // styles
 $border-style: 1px solid $border-color;

@@ -1,4 +1,9 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import { CUSTOMER_CAPTIONS } from 'consts';
@@ -17,8 +22,9 @@ const CustomersTable = ({
   customers,
   initalSort,
   fillPageSize,
-  onEditSubmit,
-  onDeleteSubmit,
+  onEditCustomer,
+  onDeleteCustomer,
+  style,
 }) => {
   const [sortParams, setSortParams] = useState(() => getInitSortParams(initalSort));
   const [currentPage, setPage] = useState(1);
@@ -65,8 +71,15 @@ const CustomersTable = ({
 
   console.log('sortParams >>>', sortParams);
 
+  useEffect(() => {
+    // автоматический переход на страницу с данными (когда с текущей данные были удалены или вся таблица очищена)
+    if (currentPage > countPages) {
+      setPage(Math.max(countPages, 1));
+    }
+  }, [currentPage, countPages]);
+
   return (
-    <div className="customers-table">
+    <div className="customers-table" style={style}>
       <CustomersTableCaptions
         captions={captions}
         setSortUp={setSortUp}
@@ -80,8 +93,8 @@ const CustomersTable = ({
           <CustomersTableRow
             key={item.id}
             info={item}
-            onEdit={onEditSubmit} // TODO open edit modal
-            onDelete={onDeleteSubmit} // TODO oppen confirm delete modal
+            onEdit={onEditCustomer}
+            onDelete={onDeleteCustomer}
           />
         ))
       )}
@@ -97,14 +110,16 @@ const CustomersTable = ({
 
 CustomersTable.propTypes = {
   customers: PropTypes.array.isRequired,
-  onEditSubmit: PropTypes.func.isRequired,
-  onDeleteSubmit: PropTypes.func.isRequired,
+  onEditCustomer: PropTypes.func.isRequired,
+  onDeleteCustomer: PropTypes.func.isRequired,
   initalSort: PropTypes.object,
+  style: PropTypes.object,
   fillPageSize: PropTypes.number,
 };
 
 CustomersTable.defaultProps = {
   initalSort: null,
+  style: null,
   fillPageSize: 10,
 };
 

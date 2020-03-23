@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import Modal from 'react-modal';
+
 
 import { ErrorBoundary } from 'components/stubs';
 import { isDev } from 'consts';
@@ -12,6 +14,7 @@ import 'assets/main.scss';
 
 const store = configureStore();
 const mountNode = document.getElementById('app');
+Modal.setAppElement(mountNode);
 
 ReactDOM.render(
   <React.StrictMode>
