@@ -1,6 +1,19 @@
-# empty-project
+# React table with Redux + IndexDB
 
-Empty project.
+[Demo](https://kir4ik.github.io/react-table/)
+
+- Configuring IndexedDB as Server Storage.
+- Pagination table.
+- Column Sort.
+- Modal windows on CRUD operations.
+- Notifications of the status of operations.
+
+> [!TIP]
+> It is possible to generate a random data set
+> (**Button "Dev Install"**)
+
+> [!WARNING]
+> When validating fields, errors are not explained. Only highlighted
 
 ## Building and running on localhost
 
@@ -21,10 +34,6 @@ To create a production build:
 ```sh
 npm run build-prod
 ```
-
-## Running
-
-Open the file `dist/index.html` in your browser
 
 ## Credits
 
